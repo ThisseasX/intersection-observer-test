@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intersection Observer Test</title>
+    <style>
+      .content {
+        font-size: 40px;
+        border-bottom: 1px solid black;
+        padding-bottom: 32px;
+        margin: 32px;
+      }
+
+      .label {
+        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        padding: 0 8px;
+        transition: color 0.5s, background-color 0.5s;
+      }
+
+      .notifications-panel {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        margin: -8px;
+        padding: 8px;
+        width: 100%;
+      }
+
+      .notification {
+        margin: 8px;
+        background-color: red;
+        padding: 8px 16px;
+        color: white;
+        width: fit-content;
+        transition: opacity 1s;
+      }
+
+      .notification-leaving {
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="notifications-panel"></div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+    <div class="content">
+      <span class="label"></span>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus repellat
+      quibusdam aperiam, cum perferendis a! Cumque eligendi placeat officia
+      cupiditate esse deserunt iure maiores sequi fuga consequatur, repellendus
+      fugiat blanditiis.
+    </div>
+
+    <script>
+      const THRESHOLDS = 100;
+      const notifs = document.querySelector('.notifications-panel');
+
+      document.querySelectorAll('.content').forEach((el, i) => {
+        const label = el.querySelector('.label');
+        let lastIntersectionRatio = 0;
+
+        const handleObserve = ([{ intersectionRatio, isIntersecting }]) => {
+          if (!isIntersecting) {
+            const notif = document.createElement('div');
+            notif.classList.add('notification');
+            notif.textContent = `Number ${i + 1} is no longer visible!`;
+
+            notifs.prepend(notif);
+
+            notif.ontransitionend = () => {
+              notifs.removeChild(notif);
+            };
+
+            setTimeout(() => {
+              notif.classList.add('notification-leaving');
+            }, 1000);
+
+            return;
+          }
+
+          const color =
+            intersectionRatio > lastIntersectionRatio
+              ? `rgba(0,0,255,${intersectionRatio})`
+              : `rgba(255,0,0,${intersectionRatio})`;
+
+          lastIntersectionRatio = intersectionRatio;
+
+          label.textContent = `[${i + 1}] ${(intersectionRatio * 100).toFixed(2)}%`;
+          label.style.backgroundColor = color;
+          label.style.color = intersectionRatio > 0.5 ? 'white' : 'black';
+        };
+
+        const options = {
+          threshold: Array(THRESHOLDS + 1)
+            .fill()
+            .map((_, i) => i / THRESHOLDS),
+        };
+
+        new IntersectionObserver(handleObserve, options).observe(el);
+      });
+    </script>
+  </body>
+</html>
